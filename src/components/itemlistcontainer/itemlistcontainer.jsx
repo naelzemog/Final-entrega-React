@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ItemList } from "../itemlist/itemlist.jsx";
+import { getProducts } from "../../services/productsService";
 
 export const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
@@ -7,14 +8,8 @@ export const ItemListContainer = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/products.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Error al cargar los productos");
-        }
-
-        return res.json();
-      })
+    // Ahora los productos vienen de Firestore
+    getProducts()
       .then((data) => setProducts(data))
       .catch((error) => setErrors(error.message))
       .finally(() => setLoading(false));
